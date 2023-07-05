@@ -11,6 +11,15 @@ export interface IEvent {
     images: IImage[];
     dates: IDates;
     _embedded: IEmbedded;
+    classifications: IClassification[];
+}
+
+export interface IClassification {
+    segment: ISegment;
+}
+
+export interface ISegment {
+    name: string;
 }
 
 export interface IEmbedded {

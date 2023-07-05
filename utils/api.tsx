@@ -5,7 +5,7 @@ export default async function getEvents(
   classification: string
 ) {
   const TICKETMASTER_API_KEY = process.env.NEXT_PUBLIC_TICKETMASTER_API_KEY;
-  const locationQuery = `latlong=${location.latitude},${location.longitude}&unit=km&radius=50&sort=date,asc&size=50`;
+  const locationQuery = `latlong=${location.latitude},${location.longitude}&unit=km&radius=50&sort=date,asc&size=150`;
   let querySearchParam = "";
   if (classification) {
     querySearchParam = `&classificationName=${classification}`;

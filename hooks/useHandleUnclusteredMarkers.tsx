@@ -1,16 +1,7 @@
-import { MutableRefObject, useCallback, useMemo, useRef } from "react";
-import {
-  GeoJSONSource,
-  LngLat,
-  LngLatLike,
-  MapboxGeoJSONFeature,
-  MapRef,
-  Point,
-  PointLike,
-} from "react-map-gl";
+import { MutableRefObject, useCallback, useMemo } from "react";
+import { MapRef } from "react-map-gl";
 import CustomMarker from "@/components/CustomMarker";
 import { isEqual } from "lodash";
-import { applyOffset } from "@/utils/helpers";
 
 // Handle unclustered markers by adding them to the markersOnScreen state and memoizing previously rendered markers
 export const useHandleUnclusteredMarkers = (
@@ -22,7 +13,6 @@ export const useHandleUnclusteredMarkers = (
     () => ({}),
     []
   );
-  const coordinatesRef: MutableRefObject<Set<string>> = useRef(new Set());
 
   return useCallback(() => {
     if (!mapRef.current) return;
@@ -35,33 +25,22 @@ export const useHandleUnclusteredMarkers = (
           const id = feature.properties!.id;
           let marker = memoizedMarkers[id];
           if (!marker) {
-            const [lngInitial, latInitial] = (feature.geometry as GeoJSON.Point)
-              .coordinates;
-            const { longitude, latitude } = applyOffset(
-              coordinatesRef,
-              lngInitial,
-              latInitial
+            marker = (
+              <CustomMarker
+                key={id}
+                feature={feature as GeoJSON.Feature<GeoJSON.Point>}
+              />
             );
-            const updatedFeature: GeoJSON.Feature<GeoJSON.Point> = {
-              ...feature,
-              geometry: { type: "Point", coordinates: [longitude, latitude] },
-            };
-            marker = <CustomMarker key={id} feature={updatedFeature} />;
             memoizedMarkers[id] = marker;
           }
           newMarkers[id] = marker;
         }
       }
+
       // Update markersOnScreen state only if new markers are different from the previous ones
       if (isEqual(newMarkers, markersOnScreenRef.current)) return;
       setMarkersOnScreen(newMarkers);
       markersOnScreenRef.current = newMarkers;
     }
-  }, [
-    mapRef,
-    markersOnScreenRef,
-    memoizedMarkers,
-    setMarkersOnScreen,
-    coordinatesRef,
-  ]);
+  }, [mapRef, markersOnScreenRef, memoizedMarkers, setMarkersOnScreen]);
 };

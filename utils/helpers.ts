@@ -1,4 +1,4 @@
-import { IEvent, IImage, ILocation } from "@/interfaces/interfaces";
+import { IEvent, IImage } from "@/interfaces/interfaces";
 import turf from "turf";
 import { MutableRefObject } from "react";
 
@@ -13,7 +13,8 @@ export const createGeoJsonFromEvents = (
       properties: {
         id: event.id,
         title: event.name,
-        popupHTML: createMarkerPopUpHTML(event)
+        popupHTML: createMarkerPopUpHTML(event),
+        icon: assignIconByCategory(event.classifications[0].segment.name),
       },
       geometry: {
         type: "Point",
@@ -67,38 +68,60 @@ export const createMarkerPopUpHTML = (event: IEvent): string => {
                                 <p class="text-xs text-center">${eventTime}</p>
                                 </div>
                                 <div class = "flex flex-row justify-center items-center space-x-3 mt-1">
-                                <a href="${event.url}" target="_blank" class="text-xs text-center text-[#878d26] hover:text-[#a3a82c]">Buy Tickets</a>
+                                <a href="${event.url}" target="_blank" class="text-sm text-center text-[#437bca] font-semibold hover:text-[#79acf4]">Buy Tickets</a>
                                 </div>
                             </div>`;
 };
 
 
-// This function applies an offset to the coordinates of the event location if the coordinates have already been used
-export const applyOffset = (coordinates: MutableRefObject<Set<string>>, longitude: number, latitude: number): ILocation => {
-  const longitudeRounded = longitude.toFixed(3);
-  const latitudeRounded = latitude.toFixed(3);
-  const locationKey = `${longitudeRounded},${latitudeRounded}`;
+// This function applies offsets to markers that are in the same location
+export const applyOffsets = (coordinates: MutableRefObject<Set<string>>, features: GeoJSON.Feature[]): GeoJSON.Feature[] => {
+  const featuresWithOffsets = features.map((feature: any) => {
+    const longitude = +feature.geometry.coordinates[0];
+    const latitude = +feature.geometry.coordinates[1];
 
-  if (coordinates.current.has(locationKey)) {
-    const offsetDistance = 150;
-    const point = turf.point([longitude, latitude]);
+    const longitudeRounded = longitude.toFixed(3);
+    const latitudeRounded = latitude.toFixed(3);
+    const locationKey = `${longitudeRounded},${latitudeRounded}`;
+    if (coordinates.current.has(locationKey)) {
+      const offsetDistance = 10;
+      const point = turf.point([longitude, latitude]);
 
-    // Generate a random bearing between 0 and 360 degrees
-    const bearing = Math.random() * 360;
+      // Generate a random bearing between 0 and 360 degrees
+      const bearing = Math.random() * 360;
 
-    const offsetPoint = turf.destination(point, offsetDistance, bearing, "meters");
-    const offsetLng = offsetPoint.geometry.coordinates[0];
-    const offsetLat = offsetPoint.geometry.coordinates[1];
+      const offsetPoint = turf.destination(point, offsetDistance, bearing, "meters");
+      const offsetLng = offsetPoint.geometry.coordinates[0];
+      const offsetLat = offsetPoint.geometry.coordinates[1];
 
-    return {
-      longitude: offsetLng,
-      latitude: offsetLat
+      return {
+        ...feature,
+        geometry: {
+          ...feature.geometry,
+          coordinates: [offsetLng, offsetLat]
+        }
+      }
     }
-  } else {
-    coordinates.current.add(locationKey);
-    return {
-      longitude,
-      latitude
+    else {
+      coordinates.current.add(locationKey);
+      return feature;
     }
+  })
+  return featuresWithOffsets;
+}
+
+// This function assigns an icon to a marker based on the event category
+const assignIconByCategory = (category: string): string => {
+  switch (category) {
+    case "Music":
+      return "/music.svg";
+    case "Sports":
+      return "/sport.svg";
+    case "Arts & Theatre":
+      return "/art.svg";
+    case "Miscellaneous":
+      return "/other.svg";
+    default:
+      return "/other.svg";
   }
 }
