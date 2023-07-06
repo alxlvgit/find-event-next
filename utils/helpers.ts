@@ -1,20 +1,22 @@
 import { IEvent, IImage } from "@/interfaces/interfaces";
 import turf from "turf";
-import { MutableRefObject } from "react";
+import { Map } from "mapbox-gl";
 
 // This function creates a GeoJSON FeatureCollection from an array of events
 export const createGeoJsonFromEvents = (
-  events: IEvent[]
+  events: IEvent[],
+  coordinates: Set<string>
 ): GeoJSON.FeatureCollection => {
   const features: GeoJSON.Feature[] = events.map((event: IEvent) => {
     const { longitude, latitude } = event._embedded.venues[0].location;
+    const classification = event.classifications && event.classifications[0]?.segment?.name || "Miscellaneous";
     return {
       type: "Feature",
       properties: {
         id: event.id,
         title: event.name,
         popupHTML: createMarkerPopUpHTML(event),
-        icon: assignIconByCategory(event.classifications[0].segment.name),
+        icon: assignIconByCategory(classification),
       },
       geometry: {
         type: "Point",
@@ -25,9 +27,10 @@ export const createGeoJsonFromEvents = (
       },
     };
   });
+  const featuresWithOffsets = applyOffsets(coordinates, features);
   return {
     type: "FeatureCollection",
-    features: features,
+    features: featuresWithOffsets,
   };
 };
 
@@ -49,12 +52,12 @@ const filterImagesForPopUp = (
 // This function creates the HTML for the pop-up that appears when a user clicks on a marker
 export const createMarkerPopUpHTML = (event: IEvent): string => {
   let eventImage = filterImagesForPopUp(event)?.url;
-  const eventDate = event.dates.start.localDate
+  const eventDate = event.dates?.start?.localDate
     ? event.dates.start.localDate
     : "TBD";
-  const eventTime = event.dates.start.noSpecificTime
+  const eventTime = event.dates?.start?.noSpecificTime
     ? "N/A"
-    : event.dates.start.localTime
+    : event.dates?.start?.localTime
       ? event.dates.start.localTime.split(":").slice(0, 2).join(":")
       : "N/A";
 
@@ -75,25 +78,22 @@ export const createMarkerPopUpHTML = (event: IEvent): string => {
 
 
 // This function applies offsets to markers that are in the same location
-export const applyOffsets = (coordinates: MutableRefObject<Set<string>>, features: GeoJSON.Feature[]): GeoJSON.Feature[] => {
+export const applyOffsets = (coordinates: Set<string>, features: GeoJSON.Feature[]): GeoJSON.Feature[] => {
   const featuresWithOffsets = features.map((feature: any) => {
     const longitude = +feature.geometry.coordinates[0];
     const latitude = +feature.geometry.coordinates[1];
-
     const longitudeRounded = longitude.toFixed(3);
     const latitudeRounded = latitude.toFixed(3);
     const locationKey = `${longitudeRounded},${latitudeRounded}`;
-    if (coordinates.current.has(locationKey)) {
+    if (coordinates.has(locationKey)) {
       const offsetDistance = 10;
       const point = turf.point([longitude, latitude]);
 
       // Generate a random bearing between 0 and 360 degrees
       const bearing = Math.random() * 360;
-
       const offsetPoint = turf.destination(point, offsetDistance, bearing, "meters");
       const offsetLng = offsetPoint.geometry.coordinates[0];
       const offsetLat = offsetPoint.geometry.coordinates[1];
-
       return {
         ...feature,
         geometry: {
@@ -103,7 +103,7 @@ export const applyOffsets = (coordinates: MutableRefObject<Set<string>>, feature
       }
     }
     else {
-      coordinates.current.add(locationKey);
+      coordinates.add(locationKey);
       return feature;
     }
   })
@@ -125,3 +125,38 @@ const assignIconByCategory = (category: string): string => {
       return "/other.svg";
   }
 }
+
+// This function calculates the radius of the map based on the current bounds
+export const getRadiusFromBounds = (map: Map): number | null => {
+  if (map) {
+    const bounds = map.getBounds();
+    const center = map.getCenter();
+    const radius = turf.distance(
+      turf.point([bounds.getNorth(), center.lng]),
+      turf.point([bounds.getSouth(), center.lng]),
+      "kilometers"
+    );
+    return Math.round(radius);
+  }
+  return null;
+}
+
+export const filterDuplicateEvents = (events: IEvent[]): IEvent[] => {
+  const uniqueNames: string[] = [];
+  const uniqueEvents: IEvent[] = [];
+  events.some(event => {
+    if (!uniqueNames.includes(event.name)) {
+      if (event._embedded?.attractions) {
+        if (!uniqueNames.includes(event._embedded.attractions[0].name)) {
+          uniqueNames.push(event.name);
+          uniqueNames.push(event._embedded.attractions[0].name);
+          uniqueEvents.push(event);
+        }
+      } else {
+        uniqueNames.push(event.name);
+        uniqueEvents.push(event);
+      }
+    }
+  });
+  return uniqueEvents;
+};

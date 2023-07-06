@@ -24,6 +24,11 @@ export interface ISegment {
 
 export interface IEmbedded {
     venues: IVenue[];
+    attractions: IAttraction[];
+}
+
+export interface IAttraction {
+    name: string;
 }
 
 export interface IVenue {
@@ -38,10 +43,11 @@ export interface IImage {
 }
 
 export interface IDates {
-    start: IStart;
+    start: IStartEnd;
+    end: IStartEnd;
 }
 
-export interface IStart {
+export interface IStartEnd {
     localDate: string;
     localTime: string;
     noSpecificTime: boolean;
