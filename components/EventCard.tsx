@@ -14,7 +14,9 @@ const EventCard = ({ event }: { event: IEvent }) => {
         <Image
           className="rounded-md"
           src={
-            eventImage && eventImage[0] ? eventImage[0].url : "/placeholder.png"
+            eventImage && eventImage[0]
+              ? eventImage[0].url
+              : "/placeholder.webp"
           }
           alt="Picture of the event"
           width={640}

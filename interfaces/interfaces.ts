@@ -52,3 +52,8 @@ export interface IStartEnd {
     localTime: string;
     noSpecificTime: boolean;
 }
+
+export interface ISideBarState {
+    sideBarDataLoading: boolean;
+    events: IEvent[];
+}

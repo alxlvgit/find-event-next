@@ -36,7 +36,6 @@ export const useHandleUnclusteredMarkers = (
           newMarkers[id] = marker;
         }
       }
-
       // Update markersOnScreen state only if new markers are different from the previous ones
       if (isEqual(newMarkers, markersOnScreenRef.current)) return;
       setMarkersOnScreen(newMarkers);
