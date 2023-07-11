@@ -22,16 +22,16 @@ const Sidebar = () => {
 
   // Render initial 10 events
   useEffect(() => {
-    const initialEvents = events.slice(0, 10);
+    const initialEvents = events.slice(0, 5);
     dispatch(setVisibleEvents(initialEvents));
-    dispatch(setHasMoreEvents(initialEvents.length > 0));
+    dispatch(setHasMoreEvents(events.length > 10));
   }, [events, dispatch]);
 
   // Handle infinite scrolling if user scrolls past the last rendered card in the sidebar
   const lastVisibleCardRef = useInfiniteScroll(events, loading);
 
   return (
-    <ul className="w-72 bg-white border-r-2 border-blue-50 flex flex-col overflow-y-auto ">
+    <ul className="w-96 bg-white border-r-2 border-blue-50 flex flex-col overflow-y-auto ">
       {loading ? (
         <SideBarLoadingSkeleton />
       ) : visibleEvents.length > 0 ? (

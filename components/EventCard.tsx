@@ -2,6 +2,7 @@ import React from "react";
 import Card from "./Card";
 import Image from "next/image";
 import { IEvent } from "@/interfaces/interfaces";
+import Link from "next/link";
 
 const EventCard = ({
   event,
@@ -14,8 +15,15 @@ const EventCard = ({
   const eventImage = event.images?.filter(
     (image) => image.ratio === "16_9" && image.width === 640
   );
+
   return (
     <Card lastCardRef={lastCardRef}>
+      <Link
+        target={"_blank"}
+        className="absolute w-full h-full"
+        href={`${event.url}`}
+        id={event.id}
+      ></Link>
       <div className="event-image w-full">
         <Image
           className="rounded-md"
@@ -29,7 +37,7 @@ const EventCard = ({
           height={360}
         ></Image>
       </div>
-      <div className="event-info mt-1">
+      <div className="event-info px-2 py-2">
         <div className="event-title text-base font-semibold line-clamp-1">
           {name}
         </div>

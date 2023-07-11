@@ -1,7 +1,6 @@
 import React, {
   MutableRefObject,
   useCallback,
-  useEffect,
   useMemo,
   useRef,
   useState,
@@ -18,37 +17,38 @@ import { ClusterLayer, ClusterCountLayer } from "@/utils/map-layers";
 import { useHandleUnclusteredMarkers } from "@/hooks/useHandleUnclusteredMarkers";
 import SearchButton from "./SearchButton";
 import useHandleSearch from "@/hooks/useHandleSearch";
+import { useAppSelector } from "@/redux/hooks";
 
 const MapComponent = () => {
   const mapRef: MutableRefObject<any> = useRef();
-  const [markersOnScreen, setMarkersOnScreen] = useState({});
   const markersOnScreenRef = useRef({});
   const [showSearchButton, setShowSearchButton] = useState(false);
+  const markersOnScreen = useAppSelector(
+    (state) => state.sidebarSlice.markersOnScreen
+  );
 
   // Handle unclustered markers on render event
-  const onRender = useHandleUnclusteredMarkers(
-    mapRef,
-    setMarkersOnScreen,
-    markersOnScreenRef
-  );
+  const onRender = useHandleUnclusteredMarkers(mapRef, markersOnScreenRef);
 
   // Show search button on zoomend event
   const onZoomEnd = useCallback(() => {
     setShowSearchButton(true);
   }, [setShowSearchButton]);
 
-  // Add event listeners on map load
-  const onLoad = useCallback(() => {
-    mapRef.current?.getMap().on("zoomend", onZoomEnd);
-    mapRef.current?.getMap().on("render", onRender);
-  }, [mapRef, onRender, onZoomEnd]);
-
   // Handle search button click
   const handleOnSearch = useHandleSearch(mapRef, setShowSearchButton);
 
+  // Add event listeners on map load
+  const onLoad = useCallback(() => {
+    handleOnSearch();
+    mapRef.current?.getMap().on("zoomend", onZoomEnd);
+    mapRef.current?.getMap().on("render", onRender);
+  }, [mapRef, onRender, onZoomEnd, handleOnSearch]);
+
   // Create markers from markersOnScreen state and memoize them
   const markers = useMemo(() => {
-    return Object.values(markersOnScreen);
+    if (!markersOnScreen) return;
+    return Object.values(markersOnScreenRef.current);
   }, [markersOnScreen]);
 
   return (

@@ -7,12 +7,12 @@ const CustomMarker = memo(function CustomMarker({
 }: {
   feature: GeoJSON.Feature<GeoJSON.Point>;
 }) {
-  const { id, geometry } = feature;
+  const { geometry } = feature;
   const popup: mapboxgl.Popup = new mapboxgl.Popup({
     offset: 25,
     className: "z-50 popup",
   }).setHTML(feature.properties!.popupHTML);
-  const icon = feature.properties!.icon;
+  const { icon, id } = feature.properties!;
 
   return (
     <Marker

@@ -5,7 +5,8 @@ const initialState: ISideBarState = {
     sideBarDataLoading: false,
     events: [],
     visibleEvents: [],
-    hasMoreEvents: false
+    hasMoreEvents: false,
+    markersOnScreen: []
 };
 
 const sidebarSlice = createSlice({
@@ -23,12 +24,15 @@ const sidebarSlice = createSlice({
         },
         setHasMoreEvents: (state, action: PayloadAction<boolean>) => {
             state.hasMoreEvents = action.payload;
+        },
+        setMarkersOnScreen: (state, action: PayloadAction<string[]>) => {
+            state.markersOnScreen = action.payload;
         }
     }
 });
 
 
-export const { setSideBarDataLoading, setEvents, setHasMoreEvents, setVisibleEvents } = sidebarSlice.actions;
+export const { setSideBarDataLoading, setEvents, setHasMoreEvents, setVisibleEvents, setMarkersOnScreen } = sidebarSlice.actions;
 
 export default sidebarSlice.reducer;
 

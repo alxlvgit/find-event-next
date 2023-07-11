@@ -58,6 +58,7 @@ export interface ISideBarState {
     events: IEvent[];
     visibleEvents: IEvent[];
     hasMoreEvents: boolean;
+    markersOnScreen: string[];
 }
 
 export interface IFetchEventsQueryParams {

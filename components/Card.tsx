@@ -8,8 +8,11 @@ const Card = ({
   lastCardRef?: (node: HTMLLIElement) => void;
 }) => {
   return (
-    <li ref={lastCardRef} className="mx-8 my-6">
-      <div className="rounded-md flex flex-col bg-gray-50">{children}</div>
+    <li
+      ref={lastCardRef}
+      className="mx-6 my-4 rounded-md shadow-md hover:shadow-lg hover:bg-gray-50 hover:opacity-70 transition duration-300 ease-in-out "
+    >
+      <div className="rounded-md flex flex-col relative">{children}</div>
     </li>
   );
 };
