@@ -24,7 +24,7 @@ const MapComponent = () => {
   const markersOnScreenRef = useRef({});
   const [showSearchButton, setShowSearchButton] = useState(false);
   const markersOnScreen = useAppSelector(
-    (state) => state.sidebarSlice.markersOnScreen
+    (state) => state.mapSlice.markersOnScreen
   );
 
   // Handle unclustered markers on render event

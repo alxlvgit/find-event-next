@@ -3,7 +3,7 @@ import { MapRef } from "react-map-gl";
 import CustomMarker from "@/components/CustomMarker";
 import { isEqual } from "lodash";
 import { useAppDispatch } from "@/redux/hooks";
-import { setMarkersOnScreen } from "@/redux/features/sidebarSlice";
+import { setMarkersOnScreen } from "@/redux/features/mapSlice";
 
 // Handle unclustered markers by adding them to the markersOnScreen state and memoizing previously rendered markers
 export const useHandleUnclusteredMarkers = (

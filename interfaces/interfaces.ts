@@ -58,6 +58,9 @@ export interface ISideBarState {
     events: IEvent[];
     visibleEvents: IEvent[];
     hasMoreEvents: boolean;
+}
+
+export interface IMapState {
     markersOnScreen: string[];
 }
 
