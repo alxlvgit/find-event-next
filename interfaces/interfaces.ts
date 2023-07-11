@@ -56,4 +56,11 @@ export interface IStartEnd {
 export interface ISideBarState {
     sideBarDataLoading: boolean;
     events: IEvent[];
+    visibleEvents: IEvent[];
+    hasMoreEvents: boolean;
+}
+
+export interface IFetchEventsQueryParams {
+    latlong: ILocation;
+    radius: number;
 }

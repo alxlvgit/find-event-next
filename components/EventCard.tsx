@@ -3,13 +3,19 @@ import Card from "./Card";
 import Image from "next/image";
 import { IEvent } from "@/interfaces/interfaces";
 
-const EventCard = ({ event }: { event: IEvent }) => {
+const EventCard = ({
+  event,
+  lastCardRef,
+}: {
+  event: IEvent;
+  lastCardRef?: (node: HTMLLIElement) => void;
+}) => {
   const { name, dates } = event;
   const eventImage = event.images?.filter(
     (image) => image.ratio === "16_9" && image.width === 640
   );
   return (
-    <Card>
+    <Card lastCardRef={lastCardRef}>
       <div className="event-image w-full">
         <Image
           className="rounded-md"

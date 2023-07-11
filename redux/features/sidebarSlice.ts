@@ -4,6 +4,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 const initialState: ISideBarState = {
     sideBarDataLoading: false,
     events: [],
+    visibleEvents: [],
+    hasMoreEvents: false
 };
 
 const sidebarSlice = createSlice({
@@ -15,12 +17,18 @@ const sidebarSlice = createSlice({
         },
         setEvents: (state, action: PayloadAction<IEvent[]>) => {
             state.events = action.payload;
+        },
+        setVisibleEvents: (state, action: PayloadAction<IEvent[]>) => {
+            state.visibleEvents = action.payload;
+        },
+        setHasMoreEvents: (state, action: PayloadAction<boolean>) => {
+            state.hasMoreEvents = action.payload;
         }
     }
 });
 
 
-export const { setSideBarDataLoading, setEvents } = sidebarSlice.actions;
+export const { setSideBarDataLoading, setEvents, setHasMoreEvents, setVisibleEvents } = sidebarSlice.actions;
 
 export default sidebarSlice.reducer;
 
