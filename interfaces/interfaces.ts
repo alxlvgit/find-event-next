@@ -53,6 +53,16 @@ export interface IStartEnd {
     noSpecificTime: boolean;
 }
 
+export interface IFeatureProperties {
+    id: string;
+    title: string;
+    popupImage: string;
+    icon: string;
+    date: string;
+    time: string;
+    url: string;
+}
+
 export interface ISideBarState {
     sideBarDataLoading: boolean;
     events: IEvent[];
@@ -62,6 +72,7 @@ export interface ISideBarState {
 
 export interface IMapState {
     markersOnScreen: string[];
+    activePopup: string | null;
 }
 
 export interface IFetchEventsQueryParams {
