@@ -73,9 +73,12 @@ export interface ISideBarState {
 export interface IMapState {
     markersOnScreen: string[];
     activePopup: string | null;
+    selectedClassification: string;
 }
 
 export interface IFetchEventsQueryParams {
-    latlong: ILocation;
+    latitude: number;
+    longitude: number;
     radius: number;
+    classification: string;
 }

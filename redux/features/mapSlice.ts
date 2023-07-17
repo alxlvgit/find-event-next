@@ -3,7 +3,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: IMapState = {
     markersOnScreen: [],
-    activePopup: null
+    activePopup: null,
+    selectedClassification: ""
 };
 
 export const mapSlice = createSlice({
@@ -15,12 +16,15 @@ export const mapSlice = createSlice({
         },
         setActivePopup: (state, action: PayloadAction<string | null>) => {
             state.activePopup = action.payload;
+        },
+        setSelectedClassification: (state, action: PayloadAction<string>) => {
+            state.selectedClassification = action.payload;
         }
     }
 });
 
 
-export const { setMarkersOnScreen, setActivePopup } = mapSlice.actions;
+export const { setMarkersOnScreen, setActivePopup, setSelectedClassification } = mapSlice.actions;
 
 export default mapSlice.reducer;
 

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@material-tailwind/react": "^2.0.5",
     "@reduxjs/toolkit": "^1.9.5",
     "@turf/turf": "^6.5.0",
     "@types/mapbox-gl": "^2.7.11",

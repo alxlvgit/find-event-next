@@ -1,6 +1,7 @@
 import React, {
   MutableRefObject,
   useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -26,6 +27,22 @@ const MapComponent = () => {
   const markersOnScreen = useAppSelector(
     (state) => state.mapSlice.markersOnScreen
   );
+  const classification = useAppSelector(
+    (state) => state.mapSlice.selectedClassification
+  );
+
+  // Handle search button click
+  const handleOnSearch = useHandleSearch(
+    mapRef,
+    setShowSearchButton,
+    classification
+  );
+
+  // Fetch events on classification change
+  useEffect(() => {
+    if (!mapRef.current) return;
+    handleOnSearch();
+  }, [handleOnSearch, classification]);
 
   // Handle unclustered markers on render event
   const onRender = useHandleUnclusteredMarkers(mapRef, markersOnScreenRef);
@@ -34,9 +51,6 @@ const MapComponent = () => {
   const onZoomEnd = useCallback(() => {
     setShowSearchButton(true);
   }, [setShowSearchButton]);
-
-  // Handle search button click
-  const handleOnSearch = useHandleSearch(mapRef, setShowSearchButton);
 
   // Add event listeners on map load
   const onLoad = useCallback(() => {
