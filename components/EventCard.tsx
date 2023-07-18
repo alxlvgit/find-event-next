@@ -12,8 +12,9 @@ const EventCard = ({
   lastCardRef?: (node: HTMLLIElement) => void;
 }) => {
   const { name, dates } = event;
+
   const eventImage = event.images?.filter(
-    (image) => image.ratio === "16_9" && image.width === 640
+    (image) => image.ratio === "16_9" && image.width === 1024
   );
 
   return (
@@ -33,8 +34,8 @@ const EventCard = ({
               : "/placeholder.webp"
           }
           alt="Picture of the event"
-          width={640}
-          height={360}
+          width={1024}
+          height={576}
         ></Image>
       </div>
       <div className="event-info px-2 py-2">

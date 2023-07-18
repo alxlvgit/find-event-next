@@ -9,6 +9,7 @@ import {
   setVisibleEvents,
   setHasMoreEvents,
 } from "@/redux/features/sidebarSlice";
+import { useMapSidebarVisibility } from "@/hooks/useMapSidebarVisibility";
 
 const Sidebar = () => {
   const events: IEvent[] = useAppSelector((state) => state.sidebarSlice.events);
@@ -18,6 +19,7 @@ const Sidebar = () => {
   const visibleEvents = useAppSelector(
     (state) => state.sidebarSlice.visibleEvents
   );
+  const showMap = useAppSelector((state) => state.mapSlice.showMap);
   const dispatch = useAppDispatch();
 
   // Render initial 10 events
@@ -30,8 +32,13 @@ const Sidebar = () => {
   // Handle infinite scrolling if user scrolls past the last rendered card in the sidebar
   const lastVisibleCardRef = useInfiniteScroll(events, loading);
 
+  // Show sidebar if map is not visible on small screens
+  const sidebarVisibility = useMapSidebarVisibility(!showMap);
+
   return (
-    <ul className="md:w-96 w-full bg-white border-r-2 border-blue-50 flex flex-col overflow-y-auto">
+    <ul
+      className={`md:w-96 w-full bg-white border-r-2 border-blue-50 md:flex flex-col overflow-y-auto ${sidebarVisibility}`}
+    >
       {loading ? (
         <SideBarLoadingSkeleton />
       ) : visibleEvents.length > 0 ? (

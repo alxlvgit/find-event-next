@@ -75,6 +75,7 @@ export interface IMapState {
     activePopup: string | null;
     selectedClassification: string;
     sortSelection: string;
+    showMap: boolean;
 }
 
 export interface IFetchEventsQueryParams {

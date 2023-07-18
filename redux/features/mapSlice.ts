@@ -5,7 +5,8 @@ const initialState: IMapState = {
     markersOnScreen: [],
     activePopup: null,
     selectedClassification: "",
-    sortSelection: "relevance,desc"
+    sortSelection: "relevance,desc",
+    showMap: false
 };
 
 export const mapSlice = createSlice({
@@ -23,12 +24,15 @@ export const mapSlice = createSlice({
         },
         setSortSelection: (state, action: PayloadAction<string>) => {
             state.sortSelection = action.payload;
+        },
+        setShowMap: (state, action: PayloadAction<boolean>) => {
+            state.showMap = action.payload;
         }
     }
 });
 
 
-export const { setMarkersOnScreen, setActivePopup, setSelectedClassification, setSortSelection } = mapSlice.actions;
+export const { setMarkersOnScreen, setActivePopup, setSelectedClassification, setSortSelection, setShowMap } = mapSlice.actions;
 
 export default mapSlice.reducer;
 
