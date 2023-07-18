@@ -62,6 +62,13 @@ const MapComponent = () => {
     return Object.values(markersOnScreenRef.current);
   }, [markersOnScreen]);
 
+  // Resize map on map visibility change
+  useEffect(() => {
+    if (showMap) {
+      mapRef.current?.getMap().resize();
+    }
+  }, [showMap]);
+
   return (
     <div
       className={`${
