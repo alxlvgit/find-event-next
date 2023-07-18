@@ -4,7 +4,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 const initialState: IMapState = {
     markersOnScreen: [],
     activePopup: null,
-    selectedClassification: ""
+    selectedClassification: "",
+    sortSelection: "relevance,desc"
 };
 
 export const mapSlice = createSlice({
@@ -19,12 +20,15 @@ export const mapSlice = createSlice({
         },
         setSelectedClassification: (state, action: PayloadAction<string>) => {
             state.selectedClassification = action.payload;
+        },
+        setSortSelection: (state, action: PayloadAction<string>) => {
+            state.sortSelection = action.payload;
         }
     }
 });
 
 
-export const { setMarkersOnScreen, setActivePopup, setSelectedClassification } = mapSlice.actions;
+export const { setMarkersOnScreen, setActivePopup, setSelectedClassification, setSortSelection } = mapSlice.actions;
 
 export default mapSlice.reducer;
 

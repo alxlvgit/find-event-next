@@ -24,25 +24,22 @@ const MapComponent = () => {
   const mapRef: MutableRefObject<any> = useRef();
   const markersOnScreenRef = useRef({});
   const [showSearchButton, setShowSearchButton] = useState(false);
-  const markersOnScreen = useAppSelector(
-    (state) => state.mapSlice.markersOnScreen
-  );
-  const classification = useAppSelector(
-    (state) => state.mapSlice.selectedClassification
-  );
+  const { markersOnScreen, selectedClassification, sortSelection } =
+    useAppSelector((state) => state.mapSlice);
 
   // Handle search button click
   const handleOnSearch = useHandleSearch(
     mapRef,
     setShowSearchButton,
-    classification
+    selectedClassification,
+    sortSelection
   );
 
   // Fetch events on classification change
   useEffect(() => {
     if (!mapRef.current) return;
     handleOnSearch();
-  }, [handleOnSearch, classification]);
+  }, [handleOnSearch, selectedClassification, sortSelection]);
 
   // Handle unclustered markers on render event
   const onRender = useHandleUnclusteredMarkers(mapRef, markersOnScreenRef);

@@ -1,4 +1,4 @@
-import React, { memo} from "react";
+import React, { memo } from "react";
 import { Marker } from "react-map-gl";
 import { useAppSelector } from "@/redux/hooks";
 import { useAppDispatch } from "@/redux/hooks";
@@ -29,7 +29,7 @@ const CustomMarker = memo(function CustomMarker({
         dispatch(setActivePopup(id));
       }}
     >
-      <Marker key={id} longitude={longitude} latitude={latitude}>
+      <Marker longitude={longitude} latitude={latitude}>
         <div className="marker bg-no-repeat bg-cover bg-center w-8 h-8 rounded-full border-2 border-[#437bca] shadow-lg cursor-pointer bg-white">
           <div
             className="w-full h-full rounded-full absolute top-0 left-0 bg-center bg-no-repeat bg-cover"

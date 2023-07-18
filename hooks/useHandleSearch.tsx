@@ -8,7 +8,8 @@ import useFetchEvents from "./useFetchEvents";
 const useHandleSearch = (
   mapRef: MutableRefObject<MapRef>,
   setShowSearchButton: (show: boolean) => void,
-  classification: string
+  classification: string,
+  sortBy: string
 ) => {
   const coordinatesRef: MutableRefObject<Set<string>> = useRef(new Set());
   const fetchEvents = useFetchEvents();
@@ -25,10 +26,11 @@ const useHandleSearch = (
       longitude: lng,
       radius,
       classification,
+      sortBy,
     });
     const geojson = createGeoJsonFromEvents(events, coordinatesRef.current);
     markersSource.setData(geojson);
-  }, [mapRef, setShowSearchButton, fetchEvents, classification]);
+  }, [mapRef, setShowSearchButton, fetchEvents, classification, sortBy]);
 };
 
 export default useHandleSearch;

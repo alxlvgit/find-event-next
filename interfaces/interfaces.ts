@@ -74,6 +74,7 @@ export interface IMapState {
     markersOnScreen: string[];
     activePopup: string | null;
     selectedClassification: string;
+    sortSelection: string;
 }
 
 export interface IFetchEventsQueryParams {
@@ -81,4 +82,5 @@ export interface IFetchEventsQueryParams {
     longitude: number;
     radius: number;
     classification: string;
+    sortBy: string;
 }
