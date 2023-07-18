@@ -8,9 +8,9 @@ import { Header } from "@/components/Header";
 
 const HomePage = () => {
   return (
-    <div className="flex flex-col w-screen h-screen">
+    <div className="flex flex-col w-full h-full overflow-hidden">
       <Header />
-      <div className="flex flex-grow overflow-y-auto">
+      <div className="flex flex-grow overflow-hidden">
         <Sidebar />
         <div className="flex justify-center flex-grow">
           <MapComponent />

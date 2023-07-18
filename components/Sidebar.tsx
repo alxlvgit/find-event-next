@@ -31,7 +31,7 @@ const Sidebar = () => {
   const lastVisibleCardRef = useInfiniteScroll(events, loading);
 
   return (
-    <ul className="w-96 bg-white border-r-2 border-blue-50 flex flex-col overflow-y-auto ">
+    <ul className="md:w-96 w-full bg-white border-r-2 border-blue-50 flex flex-col overflow-y-auto">
       {loading ? (
         <SideBarLoadingSkeleton />
       ) : visibleEvents.length > 0 ? (

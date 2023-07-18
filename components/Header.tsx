@@ -16,7 +16,7 @@ export const Header = () => {
   };
 
   return (
-    <div className="border-b ml-96 border-blue-50 flex p-2 h-fit justify-start">
+    <div className="border-b md:ml-96 border-blue-50 flex p-2 justify-start">
       <div className="ml-6">
         <Select
           label="Select Classification"

@@ -63,7 +63,7 @@ const MapComponent = () => {
   }, [markersOnScreen]);
 
   return (
-    <div className="flex justify-center flex-grow">
+    <div className="justify-center flex-grow hidden sm:flex">
       <Map
         ref={mapRef}
         reuseMaps={true}

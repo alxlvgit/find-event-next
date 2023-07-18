@@ -41,11 +41,25 @@ const EventCard = ({
         <div className="event-title text-base font-semibold line-clamp-1">
           {name}
         </div>
-        <div className="event-start text-sm text-gray-600">
+        <div className="event-start text-sm text-gray-600 flex">
+          <Image
+            src="/date.svg"
+            alt="date"
+            width={16}
+            height={16}
+            className="mr-1"
+          ></Image>
           {dates.start?.localDate ? dates.start.localDate : "TBD"}
           {dates.end?.localDate ? ` - ${dates.end.localDate}` : ""}
         </div>
-        <div className="event-time text-sm text-gray-600">
+        <div className="event-time text-sm text-gray-600 flex">
+          <Image
+            src="/time.svg"
+            alt="time"
+            width={16}
+            height={16}
+            className="mr-1"
+          ></Image>
           {dates.start?.noSpecificTime
             ? "N/A"
             : dates.start?.localTime
