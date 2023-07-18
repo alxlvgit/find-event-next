@@ -16,7 +16,6 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { INITIAL_VIEW_STATE } from "@/utils/map-config";
 import { ClusterLayer, ClusterCountLayer } from "@/utils/map-layers";
 import { useHandleUnclusteredMarkers } from "@/hooks/useHandleUnclusteredMarkers";
-import { useMapSidebarVisibility } from "@/hooks/useMapSidebarVisibility";
 import SearchButton from "./SearchButton";
 import useHandleSearch from "@/hooks/useHandleSearch";
 import { useAppSelector } from "@/redux/hooks";
@@ -63,11 +62,12 @@ const MapComponent = () => {
     return Object.values(markersOnScreenRef.current);
   }, [markersOnScreen]);
 
-  // Show sidebar if map is not visible on small screens
-  const mapVisibility = useMapSidebarVisibility(showMap);
-
   return (
-    <div className={`justify-center flex-grow md:flex ${mapVisibility}`}>
+    <div
+      className={`${
+        showMap ? "flex" : "hidden"
+      } justify-center flex-grow md:flex`}
+    >
       <Map
         ref={mapRef}
         reuseMaps={true}
