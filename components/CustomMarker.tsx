@@ -39,18 +39,16 @@ const CustomMarker = memo(function CustomMarker({
           ></div>
         </div>
       </Marker>
-      <div className="relative w-32 h-32">
-        {showPopup && activePopup === id && (
-          <CustomPopup
-            longitude={longitude}
-            latitude={latitude}
-            onClose={() => {
-              handlePopupClose();
-            }}
-            feature={feature}
-          ></CustomPopup>
-        )}
-      </div>
+      {showPopup && activePopup === id && (
+        <CustomPopup
+          longitude={longitude}
+          latitude={latitude}
+          onClose={() => {
+            handlePopupClose();
+          }}
+          feature={feature}
+        ></CustomPopup>
+      )}
     </div>
   );
 });
