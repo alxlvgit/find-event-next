@@ -33,7 +33,7 @@ const Sidebar = () => {
 
   return (
     <ul
-      className={`md:w-96 w-full bg-white border-r-2 md:block border-blue-50 overflow-y-auto ${
+      className={`md:w-[24rem] w-full bg-white border-r-2 md:block border-blue-50 overflow-y-auto ${
         showMap ? "hidden" : "block"
       }`}
     >

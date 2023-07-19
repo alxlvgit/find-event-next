@@ -10,17 +10,19 @@ export const ShowMapButton = () => {
   };
 
   return (
-    <button
-      onClick={() => {
-        handleClick();
-      }}
-      className="flex justify-center items-center md:hidden"
-    >
-      {showMap ? (
-        <Image src="/list.svg" alt="map" width={32} height={32} />
-      ) : (
-        <Image src="/map.svg" alt="map" width={32} height={32} />
-      )}
-    </button>
+    <div className="flex-grow flex justify-end">
+      <button
+        onClick={() => {
+          handleClick();
+        }}
+        className="flex justify-center items-center md:hidden"
+      >
+        {showMap ? (
+          <Image src="/list.svg" alt="map" width={26} height={26} />
+        ) : (
+          <Image src="/map.svg" alt="map" width={26} height={26} />
+        )}
+      </button>
+    </div>
   );
 };

@@ -5,7 +5,8 @@ const initialState: ISideBarState = {
     sideBarDataLoading: false,
     events: [],
     visibleEvents: [],
-    hasMoreEvents: false
+    hasMoreEvents: false,
+    searchBarQuery: "",
 };
 
 const sidebarSlice = createSlice({
@@ -24,11 +25,14 @@ const sidebarSlice = createSlice({
         setHasMoreEvents: (state, action: PayloadAction<boolean>) => {
             state.hasMoreEvents = action.payload;
         },
+        setSearchQuery: (state, action: PayloadAction<string>) => {
+            state.searchBarQuery = action.payload;
+        }
     }
 });
 
 
-export const { setSideBarDataLoading, setEvents, setHasMoreEvents, setVisibleEvents} = sidebarSlice.actions;
+export const { setSideBarDataLoading, setEvents, setHasMoreEvents, setVisibleEvents, setSearchQuery } = sidebarSlice.actions;
 
 export default sidebarSlice.reducer;
 

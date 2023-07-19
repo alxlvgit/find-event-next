@@ -68,6 +68,7 @@ export interface ISideBarState {
     events: IEvent[];
     visibleEvents: IEvent[];
     hasMoreEvents: boolean;
+    searchBarQuery: string;
 }
 
 export interface IMapState {
@@ -84,4 +85,5 @@ export interface IFetchEventsQueryParams {
     radius: number;
     classification: string;
     sortBy: string;
+    searchBarQuery: string;
 }

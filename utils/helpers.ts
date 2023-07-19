@@ -7,7 +7,9 @@ export const createGeoJsonFromEvents = (
   events: IEvent[],
   coordinates: Set<string>
 ): GeoJSON.FeatureCollection => {
-  const features: GeoJSON.Feature[] = events.map((event: IEvent) => {
+  const features: GeoJSON.Feature[] = events.filter(
+    (event: IEvent) => event._embedded?.venues?.[0]?.location?.longitude && event._embedded?.venues?.[0]?.location?.latitude
+  ).map((event: IEvent) => {
     const { longitude, latitude } = event._embedded.venues[0].location;
     const { id, name } = event;
     const classification = event.classifications && event.classifications[0]?.segment?.name || "Miscellaneous";
@@ -125,22 +127,22 @@ export const getRadiusFromBounds = (map: Map): number | null => {
   return null;
 }
 
-export const filterDuplicateEvents = (events: IEvent[]): IEvent[] => {
-  const uniqueNames: string[] = [];
-  const uniqueEvents: IEvent[] = [];
-  events.some(event => {
-    if (!uniqueNames.includes(event.name)) {
-      if (event._embedded?.attractions) {
-        if (!uniqueNames.includes(event._embedded.attractions[0].name)) {
-          uniqueNames.push(event.name);
-          uniqueNames.push(event._embedded.attractions[0].name);
-          uniqueEvents.push(event);
-        }
-      } else {
-        uniqueNames.push(event.name);
-        uniqueEvents.push(event);
-      }
-    }
-  });
-  return uniqueEvents;
-};
+// export const filterDuplicateEvents = (events: IEvent[]): IEvent[] => {
+//   const uniqueNames: string[] = [];
+//   const uniqueEvents: IEvent[] = [];
+//   events.some(event => {
+//     if (!uniqueNames.includes(event.name)) {
+//       if (event._embedded?.attractions) {
+//         if (!uniqueNames.includes(event._embedded.attractions[0].name)) {
+//           uniqueNames.push(event.name);
+//           uniqueNames.push(event._embedded.attractions[0].name);
+//           uniqueEvents.push(event);
+//         }
+//       } else {
+//         uniqueNames.push(event.name);
+//         uniqueEvents.push(event);
+//       }
+//     }
+//   });
+//   return uniqueEvents;
+// };

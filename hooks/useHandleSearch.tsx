@@ -9,7 +9,8 @@ const useHandleSearch = (
   mapRef: MutableRefObject<MapRef>,
   setShowSearchButton: (show: boolean) => void,
   classification: string,
-  sortBy: string
+  sortBy: string,
+  searchBarQuery: string
 ) => {
   const coordinatesRef: MutableRefObject<Set<string>> = useRef(new Set());
   const fetchEvents = useFetchEvents();
@@ -19,7 +20,7 @@ const useHandleSearch = (
     const map = mapRef.current.getMap();
     const markersSource = map.getSource("events") as mapboxgl.GeoJSONSource;
     const radius = getRadiusFromBounds(map);
-    if (!radius || !markersSource) return;
+    if (radius === null || !markersSource) return;
     const { lng, lat } = map.getCenter();
     const events = await fetchEvents({
       latitude: lat,
@@ -27,10 +28,18 @@ const useHandleSearch = (
       radius,
       classification,
       sortBy,
+      searchBarQuery,
     });
     const geojson = createGeoJsonFromEvents(events, coordinatesRef.current);
     markersSource.setData(geojson);
-  }, [mapRef, setShowSearchButton, fetchEvents, classification, sortBy]);
+  }, [
+    mapRef,
+    setShowSearchButton,
+    fetchEvents,
+    classification,
+    sortBy,
+    searchBarQuery,
+  ]);
 };
 
 export default useHandleSearch;

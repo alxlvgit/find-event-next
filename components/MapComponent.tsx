@@ -26,20 +26,24 @@ const MapComponent = () => {
   const [showSearchButton, setShowSearchButton] = useState(false);
   const { markersOnScreen, selectedClassification, sortSelection, showMap } =
     useAppSelector((state) => state.mapSlice);
+  const searchBarQuery = useAppSelector(
+    (state) => state.sidebarSlice.searchBarQuery
+  );
 
   // Handle search button click
   const handleOnSearch = useHandleSearch(
     mapRef,
     setShowSearchButton,
     selectedClassification,
-    sortSelection
+    sortSelection,
+    searchBarQuery
   );
 
   // Fetch events on classification change
   useEffect(() => {
     if (!mapRef.current) return;
     handleOnSearch();
-  }, [handleOnSearch, selectedClassification, sortSelection]);
+  }, [handleOnSearch, selectedClassification, sortSelection, searchBarQuery]);
 
   // Handle unclustered markers on render event
   const onRender = useHandleUnclusteredMarkers(mapRef, markersOnScreenRef);
@@ -71,7 +75,7 @@ const MapComponent = () => {
 
   return (
     <div
-      className={`${
+      className={`relative ${
         showMap ? "flex" : "hidden"
       } justify-center flex-grow md:flex`}
     >
@@ -102,7 +106,9 @@ const MapComponent = () => {
         </Source>
         {markers}
       </Map>
-      {showSearchButton && <SearchButton onClick={handleOnSearch} />}
+      {showSearchButton && !searchBarQuery && (
+        <SearchButton onClick={handleOnSearch} />
+      )}
     </div>
   );
 };
