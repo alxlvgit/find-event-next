@@ -23,6 +23,7 @@ export const createGeoJsonFromEvents = (
         date: eventDate(event),
         time: eventTime(event),
         url: event.url || "",
+        pricing: eventPricing(event),
       },
       geometry: {
         type: "Point",

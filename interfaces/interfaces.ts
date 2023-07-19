@@ -75,6 +75,7 @@ export interface IFeatureProperties {
     date: string;
     time: string;
     url: string;
+    pricing: string;
 }
 
 export interface ISideBarState {

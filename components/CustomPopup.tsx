@@ -2,6 +2,7 @@ import { IFeatureProperties } from "@/interfaces/interfaces";
 import { Popup } from "react-map-gl";
 import Image from "next/image";
 import Link from "next/link";
+import { eventPricing } from "@/utils/helpers";
 
 export const CustomPopup = ({
   longitude,
@@ -14,7 +15,7 @@ export const CustomPopup = ({
   onClose: () => void;
   feature: GeoJSON.Feature<GeoJSON.Point>;
 }) => {
-  const { popupImage, title, date, time, url } =
+  const { popupImage, title, date, time, url, pricing } =
     feature.properties as IFeatureProperties;
   return (
     <Popup
@@ -57,6 +58,16 @@ export const CustomPopup = ({
             className="mr-1"
           ></Image>
           <p className="text-xs text-center">{time}</p>
+        </div>
+        <div className="flex w-full justify-center items-center">
+          <Image
+            src="/dollar.svg"
+            alt="price"
+            width={16}
+            height={16}
+            className="mr-1"
+          ></Image>
+          <p className="text-xs text-center">{pricing}</p>
         </div>
         <div className="flex flex-row justify-center items-center space-x-3 mt-1">
           <Link
