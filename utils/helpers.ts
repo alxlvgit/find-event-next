@@ -13,14 +13,6 @@ export const createGeoJsonFromEvents = (
     const { longitude, latitude } = event._embedded.venues[0].location;
     const { id, name } = event;
     const classification = event.classifications && event.classifications[0]?.segment?.name || "Miscellaneous";
-    const eventDate = event.dates?.start?.localDate
-      ? event.dates.start.localDate
-      : "TBD";
-    const eventTime = event.dates?.start?.noSpecificTime
-      ? "N/A"
-      : event.dates?.start?.localTime
-        ? event.dates.start.localTime.split(":").slice(0, 2).join(":")
-        : "N/A";
     return {
       type: "Feature",
       properties: {
@@ -28,8 +20,8 @@ export const createGeoJsonFromEvents = (
         title: name,
         popupImage: filterImagesForPopUp(event),
         icon: assignIconByCategory(classification),
-        date: eventDate,
-        time: eventTime,
+        date: eventDate(event),
+        time: eventTime(event),
         url: event.url || "",
       },
       geometry: {
@@ -127,22 +119,47 @@ export const getRadiusFromBounds = (map: Map): number | null => {
   return null;
 }
 
-// export const filterDuplicateEvents = (events: IEvent[]): IEvent[] => {
-//   const uniqueNames: string[] = [];
-//   const uniqueEvents: IEvent[] = [];
-//   events.some(event => {
-//     if (!uniqueNames.includes(event.name)) {
-//       if (event._embedded?.attractions) {
-//         if (!uniqueNames.includes(event._embedded.attractions[0].name)) {
-//           uniqueNames.push(event.name);
-//           uniqueNames.push(event._embedded.attractions[0].name);
-//           uniqueEvents.push(event);
-//         }
-//       } else {
-//         uniqueNames.push(event.name);
-//         uniqueEvents.push(event);
-//       }
-//     }
-//   });
-//   return uniqueEvents;
-// };
+// This function filters the price range for an event
+export const eventPricing = (event: IEvent): string => {
+  if (event.priceRanges) {
+    const minPrice = event.priceRanges?.[0]?.min || "";
+    const maxPrice = event.priceRanges?.[0]?.max || "";
+    const currency = event.priceRanges?.[0]?.currency || "";
+    const priceRange = !minPrice || !maxPrice || !currency ?
+      "N/A" : minPrice === 0 || maxPrice === 0 ?
+        "N/A" : minPrice === maxPrice ?
+          `${minPrice} ${currency}` : `${minPrice} - ${maxPrice} ${currency}`;
+    return priceRange;
+  }
+  return "N/A";
+}
+
+// This function filters the venue and city for an event
+export const eventVenue = (event: IEvent): string => {
+  if (event._embedded?.venues) {
+    const venue = event._embedded.venues[0].name || "";
+    const city = event._embedded.venues[0].city?.name || "";
+    const venueCity = !venue && !city ? "N/A" : !venue && city ? city : venue && !city ? venue : `${city}, ${venue}`;
+    return venueCity;
+  }
+  return "N/A";
+}
+
+// This function filters the event date for an event
+
+export const eventDate = (event: IEvent): string => {
+  const eventDate = event.dates?.start?.localDate
+    ? event.dates.start.localDate
+    : "TBD";
+  return eventDate;
+}
+
+// This function filters the event time for an event
+export const eventTime = (event: IEvent): string => {
+  const eventTime = event.dates?.start?.noSpecificTime
+    ? "N/A"
+    : event.dates?.start?.localTime
+      ? event.dates.start.localTime.split(":").slice(0, 2).join(":")
+      : "N/A";
+  return eventTime;
+}

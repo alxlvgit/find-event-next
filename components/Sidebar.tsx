@@ -1,7 +1,6 @@
 import { IEvent } from "@/interfaces/interfaces";
 import React, { useEffect } from "react";
 import EventCard from "./EventCard";
-import SideBarLoadingSkeleton from "./SideBarLoadingSkeleton";
 import SideBarNoEventsSkeleton from "./SideBarNoEventsSkeleton";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import useInfiniteScroll from "@/hooks/useInfiniteScrolling";
@@ -9,11 +8,12 @@ import {
   setVisibleEvents,
   setHasMoreEvents,
 } from "@/redux/features/sidebarSlice";
+import LoadingSkeleton from "./LoadingSkeleton";
 
 const Sidebar = () => {
   const events: IEvent[] = useAppSelector((state) => state.sidebarSlice.events);
   const loading: boolean = useAppSelector(
-    (state) => state.sidebarSlice.sideBarDataLoading
+    (state) => state.sidebarSlice.dataIsLoading
   );
   const visibleEvents = useAppSelector(
     (state) => state.sidebarSlice.visibleEvents
@@ -38,7 +38,9 @@ const Sidebar = () => {
       }`}
     >
       {loading ? (
-        <SideBarLoadingSkeleton />
+        <div className="flex justify-center items-center h-full flex-grow">
+          <LoadingSkeleton className="h-32 w-32" />
+        </div>
       ) : visibleEvents.length > 0 ? (
         visibleEvents.map((event, index) => {
           if (visibleEvents.length === index + 1) {

@@ -22,6 +22,7 @@ export const CustomPopup = ({
       latitude={latitude}
       closeButton={true}
       closeOnClick={true}
+      closeOnMove={true}
       offset={25}
       onClose={() => {
         onClose();

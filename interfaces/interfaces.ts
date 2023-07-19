@@ -12,6 +12,14 @@ export interface IEvent {
     dates: IDates;
     _embedded: IEmbedded;
     classifications: IClassification[];
+    priceRanges: IPriceRange[];
+}
+
+export interface IPriceRange {
+    type: string;
+    currency: string;
+    min: number;
+    max: number;
 }
 
 export interface IClassification {
@@ -32,7 +40,13 @@ export interface IAttraction {
 }
 
 export interface IVenue {
+    name: string;
+    city: ICity;
     location: ILocation;
+}
+
+export interface ICity {
+    name: string;
 }
 
 export interface IImage {
@@ -64,7 +78,7 @@ export interface IFeatureProperties {
 }
 
 export interface ISideBarState {
-    sideBarDataLoading: boolean;
+    dataIsLoading: boolean;
     events: IEvent[];
     visibleEvents: IEvent[];
     hasMoreEvents: boolean;

@@ -2,7 +2,7 @@ import { IEvent, ISideBarState } from '@/interfaces/interfaces';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: ISideBarState = {
-    sideBarDataLoading: false,
+    dataIsLoading: false,
     events: [],
     visibleEvents: [],
     hasMoreEvents: false,
@@ -14,7 +14,7 @@ const sidebarSlice = createSlice({
     initialState,
     reducers: {
         setSideBarDataLoading: (state, action: PayloadAction<boolean>) => {
-            state.sideBarDataLoading = action.payload;
+            state.dataIsLoading = action.payload;
         },
         setEvents: (state, action: PayloadAction<IEvent[]>) => {
             state.events = action.payload;
