@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Sidebar from "@/components/Sidebar";

@@ -1,3 +1,5 @@
+import { setShowSearchButton } from "@/redux/features/mapSlice";
+import { useAppDispatch } from "@/redux/hooks";
 import { createGeoJsonFromEvents, getRadiusFromBounds } from "@/utils/helpers";
 import mapboxgl from "mapbox-gl";
 import { MutableRefObject, useCallback, useRef } from "react";
@@ -7,15 +9,15 @@ import useFetchEvents from "./useFetchEvents";
 // Handle search button click by fetching events and updating markers
 const useHandleSearch = (
   mapRef: MutableRefObject<MapRef>,
-  setShowSearchButton: (show: boolean) => void,
   classification: string,
   sortBy: string,
   searchBarQuery: string
 ) => {
   const coordinatesRef: MutableRefObject<Set<string>> = useRef(new Set());
   const fetchEvents = useFetchEvents();
+  const dispatch = useAppDispatch();
   return useCallback(async () => {
-    setShowSearchButton(false);
+    dispatch(setShowSearchButton(false));
     if (!mapRef.current) return;
     const map = mapRef.current.getMap();
     const markersSource = map.getSource("events") as mapboxgl.GeoJSONSource;
@@ -32,14 +34,7 @@ const useHandleSearch = (
     });
     const geojson = createGeoJsonFromEvents(events, coordinatesRef.current);
     markersSource.setData(geojson);
-  }, [
-    mapRef,
-    setShowSearchButton,
-    fetchEvents,
-    classification,
-    sortBy,
-    searchBarQuery,
-  ]);
+  }, [mapRef, classification, sortBy, searchBarQuery, fetchEvents, dispatch]);
 };
 
 export default useHandleSearch;

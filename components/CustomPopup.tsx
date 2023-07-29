@@ -2,7 +2,6 @@ import { IFeatureProperties } from "@/interfaces/interfaces";
 import { Popup } from "react-map-gl";
 import Image from "next/image";
 import Link from "next/link";
-import { eventPricing } from "@/utils/helpers";
 
 export const CustomPopup = ({
   longitude,

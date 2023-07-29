@@ -1,10 +1,11 @@
+"use client";
+
 import React, {
   MutableRefObject,
   useCallback,
   useEffect,
   useMemo,
   useRef,
-  useState,
 } from "react";
 import Map, {
   Layer,
@@ -18,14 +19,20 @@ import { ClusterLayer, ClusterCountLayer } from "@/utils/map-layers";
 import { useHandleUnclusteredMarkers } from "@/hooks/useHandleUnclusteredMarkers";
 import SearchButton from "./SearchButton";
 import useHandleSearch from "@/hooks/useHandleSearch";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setShowSearchButton } from "@/redux/features/mapSlice";
 
 const MapComponent = () => {
   const mapRef: MutableRefObject<any> = useRef();
   const markersOnScreenRef = useRef({});
-  const [showSearchButton, setShowSearchButton] = useState(false);
-  const { markersOnScreen, selectedClassification, sortSelection, showMap } =
-    useAppSelector((state) => state.mapSlice);
+  const dispatch = useAppDispatch();
+  const {
+    markersOnScreen,
+    selectedClassification,
+    sortSelection,
+    showMap,
+    showSearchButton,
+  } = useAppSelector((state) => state.mapSlice);
   const searchBarQuery = useAppSelector(
     (state) => state.sidebarSlice.searchBarQuery
   );
@@ -33,7 +40,6 @@ const MapComponent = () => {
   // Handle search button click
   const handleOnSearch = useHandleSearch(
     mapRef,
-    setShowSearchButton,
     selectedClassification,
     sortSelection,
     searchBarQuery
@@ -50,8 +56,8 @@ const MapComponent = () => {
 
   // Show search button on zoomend event
   const onZoomEnd = useCallback(() => {
-    setShowSearchButton(true);
-  }, [setShowSearchButton]);
+    dispatch(setShowSearchButton(true));
+  }, [dispatch]);
 
   // Add event listeners on map load
   const onLoad = useCallback(() => {

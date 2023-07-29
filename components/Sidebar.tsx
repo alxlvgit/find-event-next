@@ -1,3 +1,5 @@
+"use client";
+
 import { IEvent } from "@/interfaces/interfaces";
 import React, { useEffect } from "react";
 import EventCard from "./EventCard";

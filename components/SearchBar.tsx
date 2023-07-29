@@ -1,3 +1,5 @@
+"use client";
+
 import React, { MutableRefObject, useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setSearchQuery } from "@/redux/features/sidebarSlice";

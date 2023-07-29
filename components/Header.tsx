@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Select, Option } from "@material-tailwind/react";
 import { useAppDispatch } from "@/redux/hooks";
