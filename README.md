@@ -16,7 +16,7 @@ Find Event is a web application designed to assist users in discovering a wide r
 - Get an overview of available events in the area.
 5. **Detailed Event Information**:
 - Click on map markers or view the event in the sidebar to find the date, time, pricing and venue information.
-6. **Purchase tickets**.
+6. **Purchase tickets**:
 - Find direct links to purchase event tickets.
 7. **Classification Filters**:
 - Filter events by specific classifications (e.g., music, sports, theater).
