@@ -5,7 +5,7 @@ const initialState: IMapState = {
   markersOnScreen: [],
   activePopup: null,
   selectedClassification: "",
-  sortSelection: "relevance,desc",
+  sortSelection: "random",
   showMap: false,
   showSearchButton: false,
 };
