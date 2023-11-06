@@ -50,13 +50,16 @@ export const Header = () => {
         <div className="md:ml-6 w-24 xs:w-48 mt-1">
           <Select
             label="Sort By"
-            value="relevance,desc"
+            value="random"
             onChange={handleSortChange}
             className="text-xs xs:text-sm"
             containerProps={{
               className: "min-w-full",
             }}
           >
+            <Option className="text-xs xs:text-sm px-2 xs:px-3" value="random">
+              Random
+            </Option>
             <Option
               className="text-xs xs:text-sm px-2 xs:px-3"
               value="relevance,desc"
@@ -74,9 +77,6 @@ export const Header = () => {
               value="name,asc"
             >
               Name
-            </Option>
-            <Option className="text-xs xs:text-sm px-2 xs:px-3" value="random">
-              Random
             </Option>
           </Select>
         </div>

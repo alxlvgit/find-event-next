@@ -56,6 +56,7 @@ export const filterImagesForPopUp = (
   }
 };
 
+// TODO: change the strategy for applying offsets
 // This function applies offsets to markers that are in the same location
 export const applyOffsets = (coordinates: Set<string>, features: GeoJSON.Feature[]): GeoJSON.Feature[] => {
   const featuresWithOffsets = features.map((feature: any) => {
