@@ -13,6 +13,7 @@ const useHandleSearch = (
   sortBy: string,
   searchBarQuery: string
 ) => {
+  // Keep track of coordinates to prevent duplicate markers. Use a ref to persist between map renders
   const coordinatesRef: MutableRefObject<Set<string>> = useRef(new Set());
   const fetchEvents = useFetchEvents();
   const dispatch = useAppDispatch();
