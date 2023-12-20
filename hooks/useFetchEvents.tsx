@@ -29,7 +29,7 @@ const useFetchEvents = () => {
         const res = await fetch(
           `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${TICKETMASTER_API_KEY}&${
             searchBarQuery ? searchBarQuery : locationQuery
-          }&sort=${sortBy}&size=50${classificationSearchParam}`
+          }&sort=${sortBy}&size=100${classificationSearchParam}`
         );
         if (!res.ok) {
           throw new Error("Failed to fetch events");

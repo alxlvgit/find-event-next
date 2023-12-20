@@ -120,9 +120,9 @@ export const getRadiusFromBounds = (map: Map): number | null => {
     const radius = turf.distance(
       turf.point([bounds.getNorth(), center.lng]),
       turf.point([bounds.getSouth(), center.lng]),
-      "kilometers"
+      "meters"
     );
-    return Math.round(radius);
+    return Math.ceil(radius / 1000);
   }
   return null;
 };

@@ -56,13 +56,7 @@ const MapComponent = () => {
 
   // Show search button on zoomend event
   const onZoomEnd = useCallback(() => {
-    // Show search button when zoomed in or out. Hide when zoomed in past a certain point
-    const zoom = mapRef.current?.getMap().getZoom();
-    if (zoom && zoom > 15.2) {
-      dispatch(setShowSearchButton(false));
-    } else {
-      dispatch(setShowSearchButton(true));
-    }
+    dispatch(setShowSearchButton(true));
   }, [dispatch]);
 
   // Add event listeners on map load
