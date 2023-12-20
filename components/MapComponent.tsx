@@ -20,7 +20,9 @@ import { useHandleUnclusteredMarkers } from "@/hooks/useHandleUnclusteredMarkers
 import SearchButton from "./SearchButton";
 import useHandleSearch from "@/hooks/useHandleSearch";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setShowSearchButton } from "@/redux/features/mapSlice";
+import { setSideBarDataLoading } from "@/redux/features/sidebarSlice";
+// import { setShowSearchButton } from "@/redux/features/mapSlice";
+import { debounce } from "lodash";
 
 const MapComponent = () => {
   const mapRef: MutableRefObject<any> = useRef();
@@ -45,6 +47,8 @@ const MapComponent = () => {
     searchBarQuery
   );
 
+  const debouncedHandleOnSearch = debounce(handleOnSearch, 2000);
+
   // Fetch events on classification change
   useEffect(() => {
     if (!mapRef.current) return;
@@ -54,17 +58,22 @@ const MapComponent = () => {
   // Handle unclustered markers on render event
   const onRender = useHandleUnclusteredMarkers(mapRef, markersOnScreenRef);
 
-  // Show search button on zoomend event
+  // Handle search on zoom end event
   const onZoomEnd = useCallback(() => {
-    dispatch(setShowSearchButton(true));
-  }, [dispatch]);
+    // dispatch(setShowSearchButton(true));
+    !searchBarQuery && debouncedHandleOnSearch();
+  }, [debouncedHandleOnSearch, searchBarQuery]);
+
+  // Cancel any pending search on zoom event and set sidebar data loading to true
+  const onZoom = useCallback(() => {
+    !searchBarQuery && dispatch(setSideBarDataLoading(true));
+    debouncedHandleOnSearch.cancel();
+  }, [debouncedHandleOnSearch, dispatch, searchBarQuery]);
 
   // Add event listeners on map load
-  const onLoad = useCallback(() => {
+  const onLoad = useCallback(async () => {
     handleOnSearch();
-    mapRef.current?.getMap().on("zoomend", onZoomEnd);
-    mapRef.current?.getMap().on("render", onRender);
-  }, [mapRef, onRender, onZoomEnd, handleOnSearch]);
+  }, [handleOnSearch]);
 
   // Create markers from markersOnScreen state and memoize them
   const markers = useMemo(() => {
@@ -93,6 +102,9 @@ const MapComponent = () => {
         projection={"globe"}
         initialViewState={INITIAL_VIEW_STATE}
         onLoad={onLoad}
+        onZoomEnd={onZoomEnd}
+        onRender={onRender}
+        onZoom={onZoom}
       >
         <NavigationControl />
         <GeolocateControl />

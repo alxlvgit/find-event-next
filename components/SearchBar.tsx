@@ -44,7 +44,7 @@ const SearchBar = () => {
         <input
           type="text"
           className="pl-4 pr-14 text-xs xs:text-base py-2 border border-blue-gray-200 rounded-md"
-          placeholder="Search by keyword"
+          placeholder="Search events globally"
           value={wordEntered}
           onChange={(e) => setWordEntered(e.target.value)}
         />
